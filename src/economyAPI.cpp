@@ -25,6 +25,7 @@ ENDSTONE_PLUGIN("economy_api", "0.1.0", economyAPI)
             .children("economy.command.add", false)
             .children("economy.command.reduce", false)
             .children("economy.command.set", false)
+            .children("economy.command.show.others", false)
             .children("economy.command.top", true);
 }
 
