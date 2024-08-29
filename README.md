@@ -2,28 +2,30 @@
 ## Plugin Introduction
 Economy plugin for EndStone.Theoretically supports multiple platforms (not tested).
 
-
 Welcome to the submission of issues!
 Unless the endstone program is retired from history, I'll keep it updated!
 
 ## Command Introduction
 ```
 - View your own money
-/economy show
+/economy show 
 
-- Check out the money charts
+- View online players money(Only OP)
+/economy show <playerName>
+
+- Check out the money charts(TODO)
 /economy top
 
-- Transferring money to the target player
+- Transferring money to the target online player
 /economy pay <playerName> <positiveNumber> 
 
--Increase the amount of money of the target player
+-Increase the amount of money of the target online player
 /economy add <playerName> <positiveNumber> 
 
-- Reduce the amount of money of the target player
+- Reduce the amount of money of the target online player
 /economy reduce <playerName> <positiveNumber> 
 
-- Setting the target player's money
+- Setting the target online player's money
 /economy set <playerName> <positiveNumber>
 ```
 ## Permission Introduction
@@ -32,10 +34,11 @@ Unless the endstone program is retired from history, I'll keep it updated!
 economy.use.base
 
 - Permissions represent the enumeration parameters that can be used
-economy.command.show
-economy.command.top
-economy.command.pay
+economy.command.show   
+economy.command.top     
+economy.command.pay     
 
+- The following are used by administrators
 economy.command.add
 economy.command.reduce
 economy.command.set
@@ -43,6 +46,9 @@ economy.command.show.others
 ```
 
 Note:I am waiting for a plugin like luckperms before you can configure these permissions. Otherwise, you can only change it from inside the plugin
+
+## Interface Related
+- todo
 
 ## TODO(Chinese)
 - 实现配置文件里的功能
