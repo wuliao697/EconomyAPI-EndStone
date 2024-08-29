@@ -22,4 +22,7 @@ public:
         return std::filesystem::current_path() / "plugins" / "economyAPI";
     }
 
+    static std::filesystem::path getLanguagePath(const std::filesystem::path& path){
+        return std::filesystem::current_path() / "plugins" / "economyAPI" / "language" / path;
+    }
 };

@@ -23,11 +23,9 @@
 
 #pragma once
 
-//extern "C" __declspec(dllexport) void (char &str);
 
 class jsonHelper:public dataHelper{
 public:
-
     /*
      * configInitialize 插件配置文件初始化
      * 已实现基本功能
@@ -42,12 +40,12 @@ public:
                           rapidjson::Value(rapidjson::kObjectType)
                                   .AddMember("monetary-unit", "¥", cfg_allocator)
                                   .AddMember("default", 1000, cfg_allocator)
-                                  .AddMember("max", 2147483647, cfg_allocator),
+                                  .AddMember("max", 2147483647, cfg_allocator)
+                                  .AddMember("currency-location", true,cfg_allocator),
                           cfg_allocator);
             cfg.AddMember("setting",
                           rapidjson::Value(rapidjson::kObjectType)
-                                  .AddMember("language", "zh_CN", cfg_allocator)
-                                  .AddMember("auto-save-interval", 10, cfg_allocator),
+                                  .AddMember("language", "zh_CN", cfg_allocator),
                           cfg_allocator);
 
             cfg.AddMember("database",
@@ -77,7 +75,7 @@ public:
 
     /**
      * getConfigData 获取插件配置
-     * 已实现基本功能
+     * 待实现
      *
      * @return 返回配置文件选项值
      */
@@ -90,7 +88,6 @@ public:
             return std::nullopt;
         }
 
-
         rapidjson::IStreamWrapper isw(file);
         cfg.SetObject();
         cfg.ParseStream(isw);
@@ -99,16 +96,14 @@ public:
             throw std::runtime_error("Exception caught: File parsing error");
         }
 
-        rapidjson::Value& configObject = cfg[settings];
-        rapidjson::Value::ConstMemberIterator itr = configObject.FindMember(options);
+        rapidjson::Value::ConstMemberIterator itr = cfg[settings].FindMember(options);
+
         try {
-            if (itr != configObject.MemberEnd()) {
-                file.close();
-                return itr->value.Get<T>;
-            }else {
-                file.close();
-                throw std::runtime_error("Invalid configuration");
+            if (!itr->value.Is<T>()){
+                throw std::runtime_error("Exception caught: options is not a legal format");
             }
+
+            return itr->value.Get<T>();
         } catch (const std::exception& e) {
             std::cerr << "Exception caught: " << e.what() << std::endl;
             return std::nullopt;
@@ -140,7 +135,7 @@ public:
 
     /*
      * getEconomyData 获取经济数据
-     * 已实现基本功能
+     * 待实现
      *
      * 返回数据以数组形式
      */
@@ -228,49 +223,18 @@ public:
         }catch (const std::runtime_error& e){
             throw std::runtime_error(e.what());
         }
-    }
+    };
 
 
-    /*
+    /**
      * getPlayerMoney 获取玩家金钱
      * 已实现基本功能
      *
-     * uuid 玩家uuid
+     * @param uuid 玩家uuid
      *
-     * 返回玩家金钱
+     * @return 返回玩家金钱
      */
-    int getPlayerMoney(const std::string& uuid) override{
-        rapidjson::Document data;
-
-        const char* uuidCStr = uuid.c_str();
-
-        try{
-            data = jsonRead();
-        }catch (const std::runtime_error& e){
-            throw std::runtime_error(e.what());
-        }
-
-        rapidjson::Value::ConstMemberIterator itr;
-        itr = data.FindMember(uuidCStr);
-
-        if (itr == data.MemberEnd()) {
-            throw std::runtime_error("Exception caught: Data is not a legal format");
-        }
-
-        itr = data[uuidCStr].FindMember("money");
-
-        if (itr == data[uuidCStr].MemberEnd()){
-            throw std::runtime_error("Exception caught: Data is not a legal format");
-        }
-
-        if (!itr->value.Is<int>()){
-            throw std::runtime_error("Exception caught: Data is not a legal format");
-        }
-
-        return itr->value.GetInt();
-    }
-
-
+    int getPlayerMoney(const std::string& uuid) override;
 
     /*
      * setPlayerMoney 设置玩家金钱
@@ -278,93 +242,27 @@ public:
      *
      * 返回布尔值
      */
-    void setPlayerMoney(const std::string& uuid,const int& money) override{
-        rapidjson::Document data;
-
-        const char* uuidCStr = uuid.c_str();
-
-        try{
-            data = jsonRead();
-        }catch (const std::runtime_error& e){
-            throw std::runtime_error(e.what());
-        }
-
-        rapidjson::Value::ConstMemberIterator itr;
-        itr = data.FindMember(uuidCStr);
-
-        if (itr == data.MemberEnd()) {
-            throw std::runtime_error("Exception caught: Data is not a legal format");
-        }
-
-        itr = data[uuidCStr].FindMember("money");
-
-        if (itr == data[uuidCStr].MemberEnd()){
-            throw std::runtime_error("Exception caught: Data is not a legal format");
-        }
-
-        if (!itr->value.Is<int>()){
-            throw std::runtime_error("Exception caught: Data is not a legal format");
-        }
-
-        try {
-            data[uuidCStr]["money"].SetInt(money);
-            jsonWrite(data);
-        }catch (const std::runtime_error& e){
-            throw std::runtime_error(e.what());
-        }
-    }
+    void setPlayerMoney(const std::string& uuid,const int& money) override;
 
     /*
      * addPlayerMoney 增加玩家金钱
      * 已初步实现
      */
-    void addPlayerMoney(const std::string& uuid,const int& addMoney) override{
-        rapidjson::Document data;
+    void addPlayerMoney(const std::string& uuid,const int& addMoney) override;
 
-        try{
-            data = jsonRead();
-        }catch (const std::runtime_error& e){
-            throw std::runtime_error(e.what());
-        }
-
-        const char* uuidCStr = uuid.c_str();
-
-        rapidjson::Value::ConstMemberIterator itr;
-        itr = data.FindMember(uuidCStr);
-
-        if (itr == data.MemberEnd()) {
-            throw std::runtime_error("Exception caught: Data is not a legal format");
-        }
-
-        itr = data[uuidCStr].FindMember("money");
-
-        if (itr == data[uuidCStr].MemberEnd()){
-            throw std::runtime_error("Exception caught: Data is not a legal format");
-        }
-
-        if (!itr->value.Is<int>()){
-            throw std::runtime_error("Exception caught: Data is not a legal format");
-        }
-
-        try{
-            data[uuidCStr]["money"].SetInt(itr->value.GetInt() + addMoney);
-            jsonWrite(data);
-        }catch(const std::runtime_error& e){
-            throw std::runtime_error(e.what());
-        }
-
-    }
 
     static void jsonWrite(const rapidjson::Document& file){
         FILE *fp;
 #ifdef _WIN32
         errno_t err = fopen_s(&fp,FilesManager::getDataPath("database.json").string().c_str(), "wb");
         if (err != 0) {
+            delete fp;
             throw std::runtime_error("Exception caught: File opening error");
         }
 #else
         fp = nullptr;
         if ((fp= fopen(FilesManager::getDataPath("database.json").string().c_str(),"w"))==nullptr){
+            delete fp;
             throw std::runtime_error("Exception caught: File opening error");
         }
 #endif
@@ -373,6 +271,7 @@ public:
         rapidjson::Writer<rapidjson::FileWriteStream> writer(os);
         file.Accept(writer);
         fclose(fp);
+        delete fp;
     }
 
     static rapidjson::Document jsonRead(){
@@ -386,6 +285,7 @@ public:
 #else
         fp = nullptr;
         if ((fp= fopen(FilesManager::getDataPath("database.json").string().c_str(),"r"))==nullptr){
+            delete fp;
             throw std::runtime_error("Exception caught: File opening error");
         }
 #endif
@@ -400,4 +300,109 @@ public:
         return data;
     }
 };
+
+
+ int jsonHelper::getPlayerMoney(const std::string& uuid) {
+    rapidjson::Document data;
+
+    try{
+        data = jsonRead();
+    }catch (const std::runtime_error& e){
+        throw std::runtime_error(e.what());
+    }
+
+    const char* uuidCStr = uuid.c_str();
+
+    rapidjson::Value::ConstMemberIterator itr;
+    itr = data.FindMember(uuidCStr);
+
+    if (itr == data.MemberEnd()) {
+        throw std::runtime_error("Exception caught: Data is not a legal format");
+    }
+
+    itr = data[uuidCStr].FindMember("money");
+
+    if (itr == data[uuidCStr].MemberEnd()){
+        throw std::runtime_error("Exception caught: Data is not a legal format");
+    }
+
+    if (!itr->value.Is<int>()){
+        throw std::runtime_error("Exception caught: Data is not a legal format");
+    }
+
+    return itr->value.GetInt();
+}
+
+void jsonHelper::setPlayerMoney(const std::string &uuid, const int &money) {
+    rapidjson::Document data;
+
+    try{
+        data = jsonRead();
+    }catch (const std::runtime_error& e){
+        throw std::runtime_error(e.what());
+    }
+
+    const char* uuidCStr = uuid.c_str();
+
+    rapidjson::Value::ConstMemberIterator itr;
+    itr = data.FindMember(uuidCStr);
+
+    if (itr == data.MemberEnd()) {
+        throw std::runtime_error("Exception caught: Data is not a legal format");
+    }
+
+    itr = data[uuidCStr].FindMember("money");
+
+    if (itr == data[uuidCStr].MemberEnd()){
+        throw std::runtime_error("Exception caught: Data is not a legal format");
+    }
+
+    if (!itr->value.Is<int>()){
+        throw std::runtime_error("Exception caught: Data is not a legal format");
+    }
+
+    try {
+        data[uuidCStr]["money"].SetInt(money);
+        jsonWrite(data);
+    }catch (const std::runtime_error& e){
+        throw std::runtime_error(e.what());
+    }
+}
+
+void jsonHelper::addPlayerMoney(const std::string &uuid, const int &addMoney) {
+    rapidjson::Document data;
+
+    try{
+        data = jsonRead();
+    }catch (const std::runtime_error& e){
+        throw std::runtime_error(e.what());
+    }
+
+    const char* uuidCStr = uuid.c_str();
+
+    rapidjson::Value::ConstMemberIterator itr;
+    itr = data.FindMember(uuidCStr);
+
+    if (itr == data.MemberEnd()) {
+        throw std::runtime_error("Exception caught: Data is not a legal format");
+    }
+
+    itr = data[uuidCStr].FindMember("money");
+
+    if (itr == data[uuidCStr].MemberEnd()){
+        throw std::runtime_error("Exception caught: Data is not a legal format");
+    }
+
+    if (!itr->value.Is<int>()){
+        throw std::runtime_error("Exception caught: Data is not a legal format");
+    }
+
+    try{
+        data[uuidCStr]["money"].SetInt(itr->value.GetInt() + addMoney);
+        jsonWrite(data);
+    }catch(const std::runtime_error& e){
+        throw std::runtime_error(e.what());
+    }
+}
+
 

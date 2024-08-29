@@ -69,7 +69,7 @@ class economyCommand : public endstone::CommandExecutor{
                 amount = stoi(args[2]);
             }
             if (args[0] == "pay") {
-                if (!targetUuid.empty() || amount <= 0){
+                if (targetUuid.empty() || amount <= 0){
                     sender.sendMessage(endstone::ColorFormat::Red + "请检查你输入的格式" + endstone::ColorFormat::Reset);
                     return false;
                 }
@@ -156,7 +156,6 @@ class economyCommand : public endstone::CommandExecutor{
         }
     }
 
-
     static bool isOnlinePlayer(endstone::Server &server,const std::string& player){
         std::vector<endstone::Player*> onlinePlayers = server.getOnlinePlayers();
         std::vector<endstone::Player*>::iterator it;
@@ -170,7 +169,6 @@ class economyCommand : public endstone::CommandExecutor{
             return false;
         }
     }
-
 };
 
 

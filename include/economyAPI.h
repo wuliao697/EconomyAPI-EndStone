@@ -13,24 +13,50 @@
 
 #include <iostream>
 
+extern "C" __declspec(dllexport) int getPlayerMoney(std::string& uuid){
+    jsonHelper jsonHelper;
+    try {
+        return jsonHelper.getPlayerMoney(uuid);
+    }catch (const std::runtime_error& e){
+        return -1;
+    }
+}
+
+extern "C" __declspec(dllexport) bool addPlayerMoney(std::string& uuid,int& money){
+    jsonHelper jsonHelper;
+    try {
+        jsonHelper.addPlayerMoney(uuid, money);
+        return true;
+    }catch (const std::runtime_error& e){
+        return false;
+    }
+}
+
+extern "C" __declspec(dllexport) bool setPlayerMoney(const std::string& uuid,const int& money){
+    jsonHelper jsonHelper;
+    try {
+        jsonHelper.setPlayerMoney(uuid, money);
+        return true;
+    }catch (const std::runtime_error& e){
+        return false;
+    }
+}
 
 class economyAPI : public endstone::Plugin{
 
     public:
     void onLoad() override
     {
-        getLogger().info("onLoad is called");
+        getLogger().info("EconomyAPI Loading!");
     }
 
     void onEnable() override{
-        getLogger().info("onEnable is called");
+        getLogger().info("EconomyAPI Activated");
 
         if (auto *command = getCommand("economy")) {
             command->setExecutor(std::make_unique<economyCommand>());
         }
 
-
-        //8533950f-514c-3e7a-8871-6761d3b60501 uuid
         try{
             jsonHelper::configInitialize();
             jsonHelper::dataBaseInitialize();
@@ -44,7 +70,7 @@ class economyAPI : public endstone::Plugin{
 
     void onDisable() override
     {
-        getLogger().info("onDisable is called");
+        getLogger().info("EconomyAPI Disable!");
     }
 
     void registerCommand(const std::vector<std::string>& names, std::unique_ptr<CommandExecutor>& executor) {
