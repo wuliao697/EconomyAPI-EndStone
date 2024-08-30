@@ -4,13 +4,13 @@
 
 
 
-#include "../cmake-build-debug/_deps/rapidjson-src/include/rapidjson/writer.h"
-#include "../cmake-build-debug/_deps/rapidjson-src/include/rapidjson/stringbuffer.h"
-#include "../cmake-build-debug/_deps/rapidjson-src/include/rapidjson/prettywriter.h"
-#include "../cmake-build-debug/_deps/rapidjson-src/include/rapidjson/document.h"
-#include "../../cmake-build-debug/_deps/rapidjson-src/include/rapidjson/istreamwrapper.h"
-#include "../../cmake-build-debug/_deps/rapidjson-src/include/rapidjson/filereadstream.h"
-#include "../../cmake-build-debug/_deps/rapidjson-src/include/rapidjson/filewritestream.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/document.h"
+#include "rapidjson/istreamwrapper.h"
+#include "rapidjson/filereadstream.h"
+#include "rapidjson/filewritestream.h"
 
 #include "endstone/plugin/plugin.h"
 #include "util/files/filesManager.h"
