@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(EconomyAPI)
+project(economyAPI)
 
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 17)
@@ -12,13 +12,8 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/EndstoneMC/endstone.git
         GIT_TAG main
 )
-FetchContent_Declare(
-        rapidjson
-        GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
-        GIT_TAG master
-)
 
-FetchContent_MakeAvailable(endstone rapidjson)
+FetchContent_MakeAvailable(endstone)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
