@@ -13,6 +13,8 @@
 
 #include <iostream>
 
+//待做
+#ifdef _WIN32
 extern "C" __declspec(dllexport) int getPlayerMoney(std::string& uuid){
     jsonHelper jsonHelper;
     try {
@@ -41,6 +43,41 @@ extern "C" __declspec(dllexport) bool setPlayerMoney(const std::string& uuid,con
         return false;
     }
 }
+#else
+extern "C" {
+
+    bool setPlayerMoney(const std::string& uuid,const int& money){
+        jsonHelper jsonHelper;
+        try {
+            jsonHelper.setPlayerMoney(uuid, money);
+            return true;
+        }catch (const std::runtime_error& e){
+            return false;
+        }
+    }
+
+    int getPlayerMoney(std::string& uuid){
+        jsonHelper jsonHelper;
+        try {
+            return jsonHelper.getPlayerMoney(uuid);
+        }catch (const std::runtime_error& e){
+            return -1;
+        }
+    }
+
+    bool addPlayerMoney(std::string& uuid,int& money){
+        jsonHelper jsonHelper;
+        try {
+            jsonHelper.addPlayerMoney(uuid, money);
+            return true;
+        }catch (const std::runtime_error& e){
+            return false;
+        }
+    }
+}
+#endif
+
+
 
 class economyAPI : public endstone::Plugin{
 
