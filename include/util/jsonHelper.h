@@ -2,7 +2,7 @@
 // Created by admin on 2024/8/12.
 //
 
-
+#pragma once
 
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -20,8 +20,6 @@
 #include <iostream>
 #include <filesystem>
 #include <string>
-
-#pragma once
 
 
 class jsonHelper:public dataHelper{
@@ -425,5 +423,68 @@ void jsonHelper::addPlayerMoney(const std::string &uuid, const int &addMoney) {
         throw std::runtime_error(e.what());
     }
 }
+
+#ifdef _WIN32
+extern "C" __declspec(dllexport) int getPlayerMoney(std::string& uuid){
+    jsonHelper jsonHelper;
+    try {
+        return jsonHelper.getPlayerMoney(uuid);
+    }catch (const std::runtime_error& e){
+        return -1;
+    }
+}
+
+extern "C" __declspec(dllexport) bool addPlayerMoney(std::string& uuid,int& money){
+    jsonHelper jsonHelper;
+    try {
+        jsonHelper.addPlayerMoney(uuid, money);
+        return true;
+    }catch (const std::runtime_error& e){
+        return false;
+    }
+}
+
+extern "C" __declspec(dllexport) bool setPlayerMoney(const std::string& uuid,const int& money){
+    jsonHelper jsonHelper;
+    try {
+        jsonHelper.setPlayerMoney(uuid, money);
+        return true;
+    }catch (const std::runtime_error& e){
+        return false;
+    }
+}
+#else
+extern "C" {
+
+    bool setPlayerMoney(const std::string& uuid,const int& money){
+        jsonHelper jsonHelper;
+        try {
+            jsonHelper.setPlayerMoney(uuid, money);
+            return true;
+        }catch (const std::runtime_error& e){
+            return false;
+        }
+    }
+
+    int getPlayerMoney(std::string& uuid){
+        jsonHelper jsonHelper;
+        try {
+            return jsonHelper.getPlayerMoney(uuid);
+        }catch (const std::runtime_error& e){
+            return -1;
+        }
+    }
+
+    bool addPlayerMoney(std::string& uuid,int& money){
+        jsonHelper jsonHelper;
+        try {
+            jsonHelper.addPlayerMoney(uuid, money);
+            return true;
+        }catch (const std::runtime_error& e){
+            return false;
+        }
+    }
+}
+#endif
 
 

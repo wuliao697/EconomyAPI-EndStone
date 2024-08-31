@@ -1,12 +1,12 @@
 //
 // Created by admin on 2024/7/29.
 //
+#pragma once
 
 #include "endstone/plugin/plugin.h"
 #include "endstone/event/player/player_join_event.h"
 #include "util/jsonHelper.h"
 
-#pragma once
 
 class economyListener {
 public:
@@ -18,6 +18,7 @@ public:
         std::string uuid = event.getPlayer().getUniqueId().str();
         if(!hasAccount(uuid)){
             creatAccount(event.getPlayer().getName(),uuid,0);
+            plugin_.getLogger().info("玩家: "+event.getPlayer().getName()+" 账户创建成功");
         }
     }
 

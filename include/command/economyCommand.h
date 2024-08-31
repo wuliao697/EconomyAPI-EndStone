@@ -2,12 +2,11 @@
 // Created by admin on 2024/7/28.
 //
 
+#pragma once
 
 #include "endstone/command/command_executor.h"
 #include "endstone/color_format.h"
 #include "util/jsonHelper.h"
-
-#pragma once
 
     /*
     * sender.hasPermission待做
