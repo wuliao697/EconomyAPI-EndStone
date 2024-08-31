@@ -120,10 +120,10 @@ class economyCommand : public endstone::CommandExecutor{
 
     static bool payPlayerMoney(std::string& transferor,std::string& transferee,int& money){
         jsonHelper jsonHelper;
+        if (jsonHelper.getPlayerMoney(transferor) < money){
+            return false;
+        }
         try{
-            if (jsonHelper.getPlayerMoney(transferor) < money){
-                return false;
-            }
             jsonHelper.addPlayerMoney(transferor,-money);
             jsonHelper.addPlayerMoney(transferee,money);
             return true;

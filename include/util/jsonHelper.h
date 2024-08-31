@@ -61,7 +61,7 @@ public:
             rapidjson::StringBuffer buffer;
             rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
             cfg.Accept(writer);
-            std::filesystem::create_directories(FilesManager::getFolder());
+            std::filesystem::create_directories(FilesManager::getDataFolder());
 
             std::ofstream file(FilesManager::getDataPath("config.json"));
             if (file.is_open()) {
@@ -132,6 +132,27 @@ public:
             }
         }
     };
+
+    static void languageInitialize(){
+        if (!std::filesystem::exists(FilesManager::getLanguagePath("en_us"))){
+            rapidjson::Document lang;
+            lang.SetObject();
+
+            rapidjson::StringBuffer buffer;
+            rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+            lang.Accept(writer);
+
+            std::filesystem::create_directories(FilesManager::getLanguageFolder());
+
+            std::ofstream file(FilesManager::getLanguagePath("en_us"));
+            if (file.is_open()) {
+                file << buffer.GetString();
+                file.close();
+            } else {
+                std::cerr << "Error opening file" << std::endl;
+            }
+        }
+    }
 
     /*
      * getEconomyData 获取经济数据

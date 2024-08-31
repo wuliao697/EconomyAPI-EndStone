@@ -18,11 +18,15 @@ public:
         return filePath;
     }
 
-    static std::filesystem::path getFolder(){
+    static std::filesystem::path getDataFolder(){
         return std::filesystem::current_path() / "plugins" / "economyAPI";
     }
 
     static std::filesystem::path getLanguagePath(const std::filesystem::path& path){
         return std::filesystem::current_path() / "plugins" / "economyAPI" / "language" / path;
+    }
+    
+    static std::filesystem::path getLanguageFolder(){
+        return std::filesystem::current_path() / "plugins" / "economyAPI" / "language";
     }
 };

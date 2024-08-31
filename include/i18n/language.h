@@ -9,6 +9,10 @@
 #pragma once
 
 class language{
-    virtual char getLanguage();
-    virtual char translation(char lang);
+    char getLanguage();
+    char translation(char lang);
 };
+
+char language::getLanguage() {
+
+}
