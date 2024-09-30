@@ -12,7 +12,3 @@ class language{
     char getLanguage();
     char translation(char lang);
 };
-
-char language::getLanguage() {
-
-}

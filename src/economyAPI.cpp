@@ -3,13 +3,12 @@
 //
 
 #include "economyAPI.h"
-#include "util/jsonHelper.h"
 
 ENDSTONE_PLUGIN("economy_api", "0.1.0", economyAPI)
 {
     description = "Economy for minecraftBE";
     command("economy")
-            .description("经济系统")
+            .description("Economy System")
             .usages("/economy (show|top|pay|add|reduce|set)<parameter:enum> [playerName:player] [money:int]")
             .permissions("economy.use.base");
 

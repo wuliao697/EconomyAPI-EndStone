@@ -215,7 +215,7 @@ public:
      *
      * 返回布尔值
      */
-    void addEconomyData(const std::string& playerName, const std::string& uuid, int& money) override{
+     void addEconomyData(const std::string& playerName, const std::string& uuid, int& money) override{
         rapidjson::Document data;
 
         const char* playerNameCstr = playerName.c_str();
@@ -226,7 +226,6 @@ public:
         }catch (const std::runtime_error& e){
             throw std::runtime_error(e.what());
         }
-
         auto& allocator = data.GetAllocator();
 
         rapidjson::Value playerObject;
@@ -423,6 +422,7 @@ void jsonHelper::addPlayerMoney(const std::string &uuid, const int &addMoney) {
         throw std::runtime_error(e.what());
     }
 }
+
 
 #ifdef _WIN32
 extern "C" __declspec(dllexport) int getPlayerMoney(std::string& uuid){

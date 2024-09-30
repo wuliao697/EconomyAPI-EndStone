@@ -37,7 +37,7 @@ class economyAPI : public endstone::Plugin{
         }
 
         listener_ = std::make_unique<economyListener>(*this);
-        registerEvent(&economyListener::onPlayerJoin, *listener_, endstone::EventPriority::High);
+        registerEvent(&economyListener::onPlayerJoin, *listener_, endstone::EventPriority::Normal);
     }
 
     void onDisable() override

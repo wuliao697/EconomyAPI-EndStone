@@ -16,15 +16,17 @@ public:
     void onPlayerJoin(endstone::PlayerJoinEvent &event)
     {
         std::string uuid = event.getPlayer().getUniqueId().str();
+        const std::string playerName = event.getPlayer().getName();
         if(!hasAccount(uuid)){
             creatAccount(event.getPlayer().getName(),uuid,0);
-            plugin_.getLogger().info("玩家: "+event.getPlayer().getName()+" 账户创建成功");
+            plugin_.getLogger().info("玩家: "+ playerName +" 账户创建成功");
         }
+        plugin_.getLogger().info(playerName);
     }
 
-    bool creatAccount(const std::string& playerName, const std::string& uuid, int money){
+    bool creatAccount(const std::string& playerName, std::string& uuid, int money){
         try{
-            jsonHelper.addEconomyData(playerName,uuid,money);
+            jsonHelper_.addEconomyData(playerName,uuid,money);
             return true;
         }catch (const std::runtime_error& e){
             return false;
@@ -33,7 +35,7 @@ public:
 
     bool hasAccount(const std::string& uuid) {
         try{
-            jsonHelper.hasEconomyData(uuid);
+            jsonHelper_.hasEconomyData(uuid);
             return true;
         }catch (const std::runtime_error& e){
             return false;
@@ -42,5 +44,5 @@ public:
 
 private:
     endstone::Plugin &plugin_;
-    jsonHelper jsonHelper;
+    jsonHelper jsonHelper_;
 };
