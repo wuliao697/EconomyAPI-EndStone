@@ -28,7 +28,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release..
           cmake --build .
 
       - name: Upload Artifacts
@@ -67,7 +67,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
           cmake --build .
 
       - name: Upload Artifacts

@@ -6,7 +6,8 @@
 
 #include "endstone/command/command_executor.h"
 #include "endstone/color_format.h"
-#include "util/jsonHelper.h"
+
+#include "util/data/poco/jsonHelper.h"
 
     /*
     * sender.hasPermission待做
@@ -21,9 +22,10 @@ class economyCommand : public endstone::CommandExecutor{
             return true;
         }
 
+        /* debug
         for (const std::string& str:args) {
             std::cout << str<<std::endl;
-        }
+        }*/
 
         if (command.getName() == "economy") {
             std::string uuid;
@@ -129,14 +131,6 @@ class economyCommand : public endstone::CommandExecutor{
         }catch (const std::exception& e){
             std::cerr << "Exception caught: " << e.what() << std::endl;
             return false;
-        }
-    }
-
-    static int canToInt(const std::string& str){
-        try{
-            return std::stoi(str);
-        }catch(const std::runtime_error& e){
-            return 0;
         }
     }
 

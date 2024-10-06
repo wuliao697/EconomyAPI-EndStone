@@ -9,6 +9,7 @@
 #pragma once
 
 class language{
-    char getLanguage();
-    char translation(char lang);
+    char getConfigLanguage();
+    char getLocalLanguage();
+    char translation(char i18n);
 };

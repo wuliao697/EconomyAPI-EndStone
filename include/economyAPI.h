@@ -9,7 +9,8 @@
 
 #include "economyListener.h"
 #include "command/economyCommand.h"
-#include "util/jsonHelper.h"
+#include "util/data/poco/jsonHelper.h"
+#include "util/config/jsonConfig.h"
 
 #include <iostream>
 
@@ -30,8 +31,8 @@ class economyAPI : public endstone::Plugin{
         }
 
         try{
-            jsonHelper::configInitialize();
-            jsonHelper::dataBaseInitialize();
+            jsonConfig::configInitialize();
+            jsonConfig::dataBaseInitialize();
         }catch (const std::runtime_error& e){
             getLogger().error(e.what());
         }
