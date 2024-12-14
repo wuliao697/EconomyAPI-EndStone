@@ -5,6 +5,8 @@ Economy plugin for EndStone.Theoretically supports multiple platforms (not teste
 Welcome to the submission of issues!
 Unless the endstone program is retired from history, I'll keep it updated!
 
+I used some radical settings regarding file reading, but will refine them later.
+
 ## Command Introduction
 ```
 - View your own money
@@ -48,8 +50,9 @@ economy.command.show.others
 Note:I am waiting for a plugin like luckperms before you can configure these permissions. Otherwise, you can only change it from inside the plugin
 
 ## Interface Related
+Waiting for endstone to update the interface...
 ```C++
-extern "C" __declspec(dllexport) int getPlayerMoney(std::string& uuid){
+extern "C" __declspec(dllexport) int getPlayerMoney(const char* uuid){
     jsonHelper jsonHelper;
     try {
         return jsonHelper.getPlayerMoney(uuid);
@@ -58,7 +61,7 @@ extern "C" __declspec(dllexport) int getPlayerMoney(std::string& uuid){
     }
 }
 
-extern "C" __declspec(dllexport) bool addPlayerMoney(std::string& uuid,int& money){
+extern "C" __declspec(dllexport) bool addPlayerMoney(const char* uuid,int& money){
     jsonHelper jsonHelper;
     try {
         jsonHelper.addPlayerMoney(uuid, money);
@@ -68,7 +71,7 @@ extern "C" __declspec(dllexport) bool addPlayerMoney(std::string& uuid,int& mone
     }
 }
 
-extern "C" __declspec(dllexport) bool setPlayerMoney(const std::string& uuid,const int& money){
+extern "C" __declspec(dllexport) bool setPlayerMoney(const char* uuid,const int& money){
     jsonHelper jsonHelper;
     try {
         jsonHelper.setPlayerMoney(uuid, money);
@@ -81,7 +84,9 @@ extern "C" __declspec(dllexport) bool setPlayerMoney(const std::string& uuid,con
 
 ## TODO(Chinese)
 - 实现配置文件里的功能
-- 支持i18n
+- 控制台操作命令
+- 内存操作(很快)
+- 试图再封装一次提供给py的接口并兼容部分py插件
 - 使用持久层框架支持关系型数据库(看情况)
 - 实现实体货币/支持多种货币共存(看情况)
 

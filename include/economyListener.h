@@ -5,7 +5,9 @@
 
 #include "endstone/plugin/plugin.h"
 #include "endstone/event/player/player_join_event.h"
+
 #include "util/data/poco/jsonHelper.h"
+#include "util/files/filesInitialize.h"
 
 
 class economyListener {
@@ -18,17 +20,21 @@ public:
         std::string uuid = event.getPlayer().getUniqueId().str();
         const std::string playerName = event.getPlayer().getName();
         if(!hasAccount(uuid)){
-            creatAccount(event.getPlayer().getName(),uuid,0);
+            creatAccount(event.getPlayer().getName(),uuid);
             plugin_.getLogger().info("玩家: "+ playerName +" 账户创建成功");
         }
         plugin_.getLogger().info(playerName);
     }
 
-    bool creatAccount(const std::string& playerName, std::string& uuid, int money){
+    bool creatAccount(const std::string& playerName, std::string& uuid){
+        int money;
         try{
+            money = cfg["money"]["default"].GetInt();
             jsonHelper_.addEconomyData(playerName,uuid,money);
             return true;
         }catch (const std::runtime_error& e){
+            money = 0;
+            jsonHelper_.addEconomyData(playerName,uuid,money);
             return false;
         }
     }

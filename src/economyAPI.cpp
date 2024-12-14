@@ -4,7 +4,7 @@
 
 #include "economyAPI.h"
 
-ENDSTONE_PLUGIN("economy_api", "0.1.0", economyAPI)
+ENDSTONE_PLUGIN("economy_api", "0.1.1", economyAPI)
 {
     description = "Economy for minecraftBE";
     command("economy")
@@ -27,6 +27,69 @@ ENDSTONE_PLUGIN("economy_api", "0.1.0", economyAPI)
             .children("economy.command.top", true);
 }
 
+
+#ifdef _WIN32
+extern "C" __declspec(dllexport) int getPlayerMoney(std::string& uuid){
+    jsonHelper jsonHelper;
+    try {
+        return jsonHelper.getPlayerMoney(uuid);
+    }catch (const std::runtime_error& e){
+        return -1;
+    }
+}
+
+extern "C" __declspec(dllexport) bool addPlayerMoney(std::string& uuid,int& money){
+    jsonHelper jsonHelper;
+    try {
+        jsonHelper.addPlayerMoney(uuid, money);
+        return true;
+    }catch (const std::runtime_error& e){
+        return false;
+    }
+}
+
+extern "C" __declspec(dllexport) bool setPlayerMoney(const std::string& uuid,const int& money){
+    jsonHelper jsonHelper;
+    try {
+        jsonHelper.setPlayerMoney(uuid, money);
+        return true;
+    }catch (const std::runtime_error& e){
+        return false;
+    }
+}
+#else
+extern "C" {
+
+    bool setPlayerMoney(const std::string& uuid,const int& money){
+        jsonHelper jsonHelper;
+        try {
+            jsonHelper.setPlayerMoney(uuid, money);
+            return true;
+        }catch (const std::runtime_error& e){
+            return false;
+        }
+    }
+
+    int getPlayerMoney(std::string& uuid){
+        jsonHelper jsonHelper;
+        try {
+            return jsonHelper.getPlayerMoney(uuid);
+        }catch (const std::runtime_error& e){
+            return -1;
+        }
+    }
+
+    bool addPlayerMoney(std::string& uuid,int& money){
+        jsonHelper jsonHelper;
+        try {
+            jsonHelper.addPlayerMoney(uuid, money);
+            return true;
+        }catch (const std::runtime_error& e){
+            return false;
+        }
+    }
+}
+#endif
 
 
 

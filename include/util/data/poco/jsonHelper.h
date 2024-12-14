@@ -8,7 +8,6 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/document.h"
-#include "rapidjson/istreamwrapper.h"
 #include "rapidjson/filereadstream.h"
 #include "rapidjson/filewritestream.h"
 
@@ -16,6 +15,7 @@
 
 #include "util/files/filesManager.h"
 #include "util/data/poco/dataHelper.h"
+
 #include "util/data/dao/jsonBase.h"
 
 #include <iostream>

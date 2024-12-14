@@ -10,10 +10,10 @@
 #include "economyListener.h"
 #include "command/economyCommand.h"
 #include "util/data/poco/jsonHelper.h"
-#include "util/config/jsonConfig.h"
+
+#include "util/files/filesInitialize.h"
 
 #include <iostream>
-
 
 class economyAPI : public endstone::Plugin{
 
@@ -31,8 +31,9 @@ class economyAPI : public endstone::Plugin{
         }
 
         try{
-            jsonConfig::configInitialize();
-            jsonConfig::dataBaseInitialize();
+            filesInitialize::configInitialize();
+            filesInitialize::languageInitialize();
+            filesInitialize::dataBaseInitialize();
         }catch (const std::runtime_error& e){
             getLogger().error(e.what());
         }
@@ -59,6 +60,5 @@ class economyAPI : public endstone::Plugin{
 
 private:
     std::unique_ptr<economyListener> listener_;
-    jsonHelper jsonHelper;
 };
 
